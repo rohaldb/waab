@@ -62,8 +62,8 @@ class App extends Component {
           {_.map(courses, (x, i) => {
             return (
               <TableRow className={classes.row} key={i}>
-                <CustomTableCell  style={{color: this.props.completed ? 'green' : 'red'}} component="th" scope="row">
-                  {x}
+                <CustomTableCell component="th" scope="row">
+                  <a   style={{color: this.props.completed ? 'green' : 'red'}} href={`https://www.handbook.unsw.edu.au/undergraduate/courses/2019/${x}/`}>{x}</a>
                 </CustomTableCell>
                 <CustomTableCell >3</CustomTableCell>
                 <CustomTableCell>3</CustomTableCell>

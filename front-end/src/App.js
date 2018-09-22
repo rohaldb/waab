@@ -85,21 +85,30 @@ class App extends Component {
                     ? <CircularProgress className={classes.progress} size={50}/>
                     : null}
                   <Grid item xs={5}>
-                      <Typography variant="title">
-                        Completed Courses
-                      </Typography>
                     {_.isEmpty(completedCourses)
                       ? null
-                      : <DataTable courses={completedCourses} completed={true}/>
-}
+                      : (
+                        <div>
+                          <Typography variant="title">
+                            Completed Courses
+                          </Typography>
+                          <DataTable courses={completedCourses} completed={true}/>  
+                        </div>
+                      )
+                    }
                   </Grid>
                   <Grid item xs={5}>
-                    <Typography variant="title">
-                      Remaining
-                    </Typography>
+                    
                     {_.isEmpty(alreadyCompleted)
                       ? null
-                      : <DataTable courses={alreadyCompleted}  completed={false}/>
+                      : (
+                        <div>
+                          <Typography variant="title">
+                            Remaining
+                          </Typography>
+                          <DataTable courses={alreadyCompleted}  completed={false}/>
+                        </div>
+                      )
 }
                   </Grid>
                 </Grid>
