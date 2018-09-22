@@ -7,7 +7,7 @@ import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
-import {DataTable} from './components'
+import {DataTable, DataTable2} from './components'
 import _ from 'lodash'
 
 const styles = theme => ({
@@ -25,6 +25,7 @@ class App extends Component {
     files: [],
     completedCourses: null,
     alreadyCompleted: null,
+    metaData: null,
     loading: false
   }
 
@@ -49,7 +50,7 @@ class App extends Component {
       return response.json()
     }).then(data => {
       console.log(data);
-      this.setState({alreadyCompleted: data[0], completedCourses: data[1], loading: false})
+      this.setState({alreadyCompleted: data[0], completedCourses: data[1], metaData: data[2], loading: false})
     }).catch(error => {
       this.setState({loading: false})
       console.error(error)
@@ -65,7 +66,7 @@ class App extends Component {
         <AppBar position="static">
           <Toolbar className={classes.black}>
             <Typography variant="title" color="inherit" className={classes.grow}>
-              WAAB
+              Course Complete (WAAB)
             </Typography>
           </Toolbar>
         </AppBar>
@@ -74,8 +75,8 @@ class App extends Component {
             <Grid container direction="column" style={{
               textAlign: 'center'
             }}>
-              <Grid item xs={5}>
-                <Dropzone onDrop={this.onDrop.bind(this)} multiple={false}>
+              <Grid item xs={12}>
+                <Dropzone onDrop={this.onDrop.bind(this)} multiple={false} style={{width: '100%', height: '200px', border: '2px solid black', margin: '30px 0px'}}>
                   <p>Drag a file here or click.</p>
                 </Dropzone>
               </Grid>
@@ -84,7 +85,7 @@ class App extends Component {
                   {loading
                     ? <CircularProgress className={classes.progress} size={50}/>
                     : null}
-                  <Grid item xs={5}>
+                  <Grid item xs={3}>
                     {_.isEmpty(completedCourses)
                       ? null
                       : (
@@ -92,13 +93,13 @@ class App extends Component {
                           <Typography variant="title">
                             Completed Courses
                           </Typography>
-                          <DataTable courses={completedCourses} completed={true}/>  
+                          <DataTable2 courses={completedCourses} completed={true}/>
                         </div>
                       )
                     }
                   </Grid>
-                  <Grid item xs={5}>
-                    
+                  <Grid item xs={8}>
+
                     {_.isEmpty(alreadyCompleted)
                       ? null
                       : (
@@ -106,7 +107,7 @@ class App extends Component {
                           <Typography variant="title">
                             Remaining
                           </Typography>
-                          <DataTable courses={alreadyCompleted}  completed={false}/>
+                          <DataTable courses={alreadyCompleted}  completed={false} metaData={this.state.metaData}/>
                         </div>
                       )
 }

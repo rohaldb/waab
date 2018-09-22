@@ -42,8 +42,8 @@ class App extends Component {
   }
 
   render() {
-    const { classes, courses, metaData } = this.props
-    console.log(metaData);
+    const { classes, courses } = this.props
+
     if (_.size(courses) === 0) {
       return null
     }
@@ -54,8 +54,6 @@ class App extends Component {
         <TableHead>
           <TableRow>
             <CustomTableCell>Code</CustomTableCell>
-            <CustomTableCell numeric>Pre Reqs</CustomTableCell>
-            <CustomTableCell numeric>Semester(s) Offered</CustomTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -63,11 +61,8 @@ class App extends Component {
             return (
               <TableRow className={classes.row} key={i}>
                 <CustomTableCell component="th" scope="row">
-                  <a target="_blank"   style={{color: this.props.completed ? 'green' : 'red'}} href={`https://www.handbook.unsw.edu.au/undergraduate/courses/2019/${x}/`}>{x}</a>
+                  <a  target="_blank" style={{color: this.props.completed ? 'green' : 'red'}} href={`https://www.handbook.unsw.edu.au/undergraduate/courses/2019/${x}/`}>{x}</a>
                 </CustomTableCell>
-                {console.log()}
-                <CustomTableCell >{_.size((_.filter(metaData, y => y.course == x))) != 0 ? (_.filter(metaData, y => y.course == x))[0].prereqs.join(",") : null}</CustomTableCell>
-                <CustomTableCell >{_.size((_.filter(metaData, y => y.course == x))) != 0 ? (_.filter(metaData, y => y.course == x))[0].sems.join(",") : null}</CustomTableCell>
               </TableRow>
             );
           })}
