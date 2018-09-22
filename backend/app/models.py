@@ -3,17 +3,17 @@
 # mongo.db.users.find({"online": True})
 
 # For now: json dict
-
+"""
+eg. courses:
+{ COMP3121: [COMP1917, COMP1927]}
+"""
 
 def get_schedule(courses):
     pairs = unroll(courses)
     n = len(pairs)
     return find_order(n, pairs)
 
-"""
-eg. courses:
-{ COMP3121: [COMP1917, COMP1927]}
-"""
+
 def unroll(courses):
     output = []
     for c in courses:
