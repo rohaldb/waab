@@ -65,7 +65,11 @@ class PdfParser:
         return course_obj
 
     def open_and_extract(bytestream):
+        import pdb
+        pdb.set_trace()
+        
         matchArray = []
+        match = ""
         try:
             #print("Attempting to read file {}".format(filename))
             pdf_file = BytesIO((file.read()))
@@ -74,7 +78,7 @@ class PdfParser:
             array_of_courses = []
             #print("Num Pages {}".format(num_pages))
             for num in range(num_pages):
-                #print("Parsing page {}".format(num))
+                print("Parsing page {}".format(num))
                 page = read_pdf.getPage(num)
                 page_content = page.extractText()
                 matches = re.findall(r'[A-Z]{4} *[0-9]{4}', page_content)
@@ -83,12 +87,11 @@ class PdfParser:
                 array_of_courses.extend(PdfParser.filter_output(matches))
 
             match = PdfParser.get_match(matchArray)
+            print(match)
+            course_meta_data = PdfParser.parse_listing("https://www.handbook.unsw.edu.au" + match["urlmap"])
+            return array_of_courses, course_meta_data, match["code"]
         except:
             print("Error reading file")
-
-        course_meta_data = PdfParser.parse_listing("https://www.handbook.unsw.edu.au" + match["urlmap"])
-
-        return array_of_courses, course_meta_data, match["code"]
 
     def parse_listing(url):
         """

@@ -7,7 +7,7 @@ from flask_pymongo import PyMongo
 from app.programs import *
 from app.courses import comp_courses
 from app.services.functions import *
-from app.services.pdf_parser import PdfParser
+from app.services.pdf_parser import PdfParser, CourseMatcher
 
 
 @app.route("/", methods=['GET', 'POST'])
@@ -15,14 +15,11 @@ from app.services.pdf_parser import PdfParser
 def home():
     print(len(request.files))
     bytestream = request.files.get('file')
-    data = PdfParser.open_and_extract(bytestream)
-    program_code = '3707'
-    have_to_do = set(programs.get(program_code))
-    already_done = set(data.get('Courses').copy())
+    array_of_courses, course_meta_data, program_code = PdfParser.open_and_extract(bytestream)
+    have_to_do = set(course_meta_data.get(program_code))
+    already_done = set(array_of_courses)
     remaining = have_to_do - already_done
-    # for r in have_to_do:
-    #     if r in already_done:
-    #         remaining.remove(r)
+
     print(remaining)
     output = list(remaining)
     course_metadata = []
