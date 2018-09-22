@@ -74,11 +74,11 @@ class App extends Component {
             <Grid container direction="column" style={{
               textAlign: 'center'
             }}>
-              <Grid item xs={5}>
-                <Dropzone onDrop={this.onDrop.bind(this)} multiple={false}>
-                  <p>Drag a file here or click.</p>
-                </Dropzone>
-              </Grid>
+            <Grid item xs={12} style={{textAlign: 'center', padding: '30px 0px'}}>
+              <Dropzone onDrop={this.onDrop.bind(this)} multiple={false} style={{width: '100%', border: '2px solid black', 'height': '200px'}}>
+                <p>Drag a file here or click.</p>
+              </Dropzone>
+            </Grid>
               <Grid item>
                 <Grid container direction="row" justify="center" spacing={40}>
                   {loading
