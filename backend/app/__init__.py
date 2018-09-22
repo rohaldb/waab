@@ -1,5 +1,8 @@
 from flask import Flask
-
+from flask_cors import CORS, cross_origin
 app = Flask(__name__)
-from app import routes
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
+
+from app import routes

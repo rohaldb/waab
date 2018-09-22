@@ -7,38 +7,48 @@ import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import {DataTable} from './components'
+import _ from 'lodash'
 
 const styles = theme => ({})
 
 class App extends Component {
   state = {
-    files: []
+    files: [],
+    completedCourses: null,
+    loading: false,
   }
 
   onDrop(files) {
-    this.setState({files})
+    this.setState({files}, () => this.sendFile())
   }
 
   sendFile = () => {
     var data = new FormData()
     data.append('file', this.state.files[0])
-    data.append('user', 'hubot')
+
+    this.setState({loading: true})
 
     fetch('http://localhost:5000/', { // Your POST endpoint
       method: 'POST',
-      // headers: {
-      //   "Content-Type": "You will perhaps need to define a content-type here"
-      // },
-      body: data
-    }).then(response => {
-      console.log('responded ', response)
-      // response.json() // if the response is a JSON object
-    }).catch(error => console.error(error) // Handle the error response object
-    )
+      body: data,
+      mode: 'cors'
+    })
+    .then(response => {
+      console.log(response);
+      return response.json()
+    })
+    .then(data => {
+      this.setState({completedCourses: data.Courses, loading: false})
+    }) 
+    .catch(error => {
+      this.setState({loading: false})
+      console.error(error)
+    })
   }
 
   render() {
-    const {classes} = this.props
+    const { classes } = this.props
+    const { completedCourses } = this.state
 
     return (
       <div className='App'>
@@ -56,18 +66,11 @@ class App extends Component {
                 <Dropzone onDrop={this.onDrop.bind(this)} multiple={false}>
                   <p>Drag a file here or click.</p>
                 </Dropzone>
-                {this.state.files.map(f => <li key={f.name}>{f.name}
-                  - {f.size}
-                  bytes</li>)
+              </Grid>
+              <Grid item>
+                {_.isEmpty(completedCourses) ? null :
+                  <DataTable courses={completedCourses} />
                 }
-              </Grid>
-              <Grid item>
-                <Button onClick={() => this.sendFile()} color="primary" variant="outlined" >
-                  Legooooo
-                </Button>
-              </Grid>
-              <Grid item>
-                <DataTable courses={["COMP2041", "COMP9444", "COMP2121"]} />
               </Grid>
             </Grid>
           </Grid>
