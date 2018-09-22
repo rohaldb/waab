@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Dropzone from 'react-dropzone'
 import Grid from '@material-ui/core/Grid'
 import {withStyles} from '@material-ui/core/styles'
@@ -9,7 +10,15 @@ import Button from '@material-ui/core/Button'
 import {DataTable} from './components'
 import _ from 'lodash'
 
-const styles = theme => ({})
+const styles = theme => ({
+  progress: {
+   margin: theme.spacing.unit * 2,
+   color: theme.palette.common.black
+ },
+ black: {
+   backgroundColor: theme.palette.common.black
+ }
+})
 
 class App extends Component {
   state = {
@@ -39,7 +48,7 @@ class App extends Component {
     })
     .then(data => {
       this.setState({completedCourses: data.Courses, loading: false})
-    }) 
+    })
     .catch(error => {
       this.setState({loading: false})
       console.error(error)
@@ -48,12 +57,12 @@ class App extends Component {
 
   render() {
     const { classes } = this.props
-    const { completedCourses } = this.state
+    const { completedCourses, loading } = this.state
 
     return (
       <div className='App'>
         <AppBar position="static">
-          <Toolbar>
+          <Toolbar className={classes.black}>
             <Typography variant="title" color="inherit" className={classes.grow}>
               WAAB
             </Typography>
@@ -61,13 +70,14 @@ class App extends Component {
         </AppBar>
         <Grid container direction="row" justify="center">
           <Grid item xs={10}>
-            <Grid container direction="column">
+            <Grid container direction="column" style={{textAlign: 'center'}}>
               <Grid item>
                 <Dropzone onDrop={this.onDrop.bind(this)} multiple={false}>
                   <p>Drag a file here or click.</p>
                 </Dropzone>
               </Grid>
               <Grid item>
+                {loading ? <CircularProgress className={classes.progress} size={50} /> : null}
                 {_.isEmpty(completedCourses) ? null :
                   <DataTable courses={completedCourses} />
                 }
