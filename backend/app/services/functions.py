@@ -38,4 +38,3 @@ def find_order(n, pairs):
                 bfs.append(pre)
 
     return bfs[::-1] if len(bfs) == n else []
-
