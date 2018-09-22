@@ -12,23 +12,26 @@ import _ from 'lodash'
 
 const styles = theme => ({
   progress: {
-   margin: theme.spacing.unit * 2,
-   color: theme.palette.common.black
- },
- black: {
-   backgroundColor: theme.palette.common.black
- }
+    margin: theme.spacing.unit * 2,
+    color: theme.palette.common.black
+  },
+  black: {
+    backgroundColor: theme.palette.common.black
+  }
 })
 
 class App extends Component {
   state = {
     files: [],
     completedCourses: null,
-    loading: false,
+    alreadyCompleted: null,
+    loading: false
   }
 
   onDrop(files) {
-    this.setState({files}, () => this.sendFile())
+    this.setState({
+      files
+    }, () => this.sendFile())
   }
 
   sendFile = () => {
@@ -41,23 +44,21 @@ class App extends Component {
       method: 'POST',
       body: data,
       mode: 'cors'
-    })
-    .then(response => {
+    }).then(response => {
       console.log(response);
       return response.json()
-    })
-    .then(data => {
-      this.setState({completedCourses: data.Courses, loading: false})
-    })
-    .catch(error => {
+    }).then(data => {
+      console.log(data);
+      this.setState({alreadyCompleted: data[0], completedCourses: data[1], loading: false})
+    }).catch(error => {
       this.setState({loading: false})
       console.error(error)
     })
   }
 
   render() {
-    const { classes } = this.props
-    const { completedCourses, loading } = this.state
+    const {classes} = this.props
+    const {completedCourses, loading, alreadyCompleted} = this.state
 
     return (
       <div className='App'>
@@ -70,17 +71,38 @@ class App extends Component {
         </AppBar>
         <Grid container direction="row" justify="center">
           <Grid item xs={10}>
-            <Grid container direction="column" style={{textAlign: 'center'}}>
-              <Grid item>
+            <Grid container direction="column" style={{
+              textAlign: 'center'
+            }}>
+              <Grid item xs={5}>
                 <Dropzone onDrop={this.onDrop.bind(this)} multiple={false}>
                   <p>Drag a file here or click.</p>
                 </Dropzone>
               </Grid>
               <Grid item>
-                {loading ? <CircularProgress className={classes.progress} size={50} /> : null}
-                {_.isEmpty(completedCourses) ? null :
-                  <DataTable courses={completedCourses} />
-                }
+                <Grid container direction="row" justify="center" spacing={40}>
+                  {loading
+                    ? <CircularProgress className={classes.progress} size={50}/>
+                    : null}
+                  <Grid item xs={5}>
+                      <Typography variant="title">
+                        Completed Courses
+                      </Typography>
+                    {_.isEmpty(completedCourses)
+                      ? null
+                      : <DataTable courses={completedCourses} completed={true}/>
+}
+                  </Grid>
+                  <Grid item xs={5}>
+                    <Typography variant="title">
+                      Remaining
+                    </Typography>
+                    {_.isEmpty(alreadyCompleted)
+                      ? null
+                      : <DataTable courses={alreadyCompleted}  completed={false}/>
+}
+                  </Grid>
+                </Grid>
               </Grid>
             </Grid>
           </Grid>

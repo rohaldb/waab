@@ -9,7 +9,6 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
-
 const CustomTableCell = withStyles(theme => ({
   head: {
     backgroundColor: theme.palette.common.black,
@@ -27,7 +26,7 @@ const styles = theme => ({
       overflowX: 'auto',
     },
     table: {
-      minWidth: 700,
+      minWidth: 400,
     },
     row: {
       '&:nth-of-type(odd)': {
@@ -50,6 +49,7 @@ class App extends Component {
     }
     return (
       <Paper className={classes.root}>
+      
       <Table className={classes.table}>
         <TableHead>
           <TableRow>
@@ -62,11 +62,11 @@ class App extends Component {
           {_.map(courses, (x, i) => {
             return (
               <TableRow className={classes.row} key={i}>
-                <CustomTableCell component="th" scope="row">
+                <CustomTableCell  style={{color: this.props.completed ? 'green' : 'red'}} component="th" scope="row">
                   {x}
                 </CustomTableCell>
-                <CustomTableCell numeric>3</CustomTableCell>
-                <CustomTableCell numeric>3</CustomTableCell>
+                <CustomTableCell >3</CustomTableCell>
+                <CustomTableCell>3</CustomTableCell>
               </TableRow>
             );
           })}

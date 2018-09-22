@@ -16,19 +16,11 @@ def home():
     bytestream = request.files.get('file')
     data = PdfParser.open_and_extract(bytestream)
     program_code = '3707'
-    # with open('./programs.json', 'r') as f:
-    #     program_dict = json.load(f)
-    # print(program_dict)
     have_to_do = set(programs.get(program_code))
     already_done = set(data.get('Courses').copy())
     remaining = have_to_do - already_done
-    # for r in have_to_do:
-    #     if r in already_done:
-    #         remaining.remove(r)
-    print(remaining)
-    data = list(remaining)
     response = app.response_class(
-        response=json.dumps(data),
+        response=json.dumps([list(remaining), list(already_done)]),
         status=200,
         mimetype='application/json'
     )
