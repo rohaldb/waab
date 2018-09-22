@@ -25,6 +25,7 @@ def home():
     # for r in have_to_do:
     #     if r in already_done:
     #         remaining.remove(r)
+    print(remaining)
     data = list(remaining)
     response = app.response_class(
         response=json.dumps(data),
