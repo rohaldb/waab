@@ -8,7 +8,7 @@ docx2txt==0.6
 EbookLib==0.15
 feedparser==5.2.1
 Flask==1.0.2
-Flask-Cors==3.0.6
+Flask-Cors==3.0.9
 Flask-PyMongo==2.1.0
 idna==2.7
 itsdangerous==0.24
